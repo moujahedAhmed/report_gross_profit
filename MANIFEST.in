@@ -1,0 +1,18 @@
+include MANIFEST.in
+include requirements.txt
+include *.json
+include *.md
+include *.py
+include *.txt
+recursive-include report_gross_profit *.css
+recursive-include report_gross_profit *.csv
+recursive-include report_gross_profit *.html
+recursive-include report_gross_profit *.ico
+recursive-include report_gross_profit *.js
+recursive-include report_gross_profit *.json
+recursive-include report_gross_profit *.md
+recursive-include report_gross_profit *.png
+recursive-include report_gross_profit *.py
+recursive-include report_gross_profit *.svg
+recursive-include report_gross_profit *.txt
+recursive-exclude report_gross_profit *.pyc
