@@ -326,7 +326,7 @@ class GrossProfitGenerator(object):
 					sales_team_table=sales_team_table, match_cond = get_match_cond('Sales Invoice')), self.filters, as_dict=1)
 		else:
 			self.si_list = frappe.db.sql("""
-				select
+			select
 					`tabSales Invoice Item`.parenttype, `tabSales Invoice Item`.parent,
 					`tabSales Invoice`.posting_date, `tabSales Invoice`.posting_time,
 					`tabSales Invoice`.project, `tabSales Invoice`.update_stock,
@@ -335,9 +335,12 @@ class GrossProfitGenerator(object):
 					`tabSales Invoice Item`.item_name, `tabSales Invoice Item`.description,
 					`tabSales Invoice Item`.warehouse, `tabSales Invoice Item`.item_group,
 					`tabSales Invoice Item`.brand, `tabSales Invoice Item`.dn_detail,
-					`tabSales Invoice Item`.delivery_note, sum(`tabSales Invoice Item`.stock_qty) as qty,
-					sum(`tabSales Invoice Item`.base_net_rate) as base_net_rate, sum(`tabSales Invoice Item`.base_net_amount) as base_net_amount,
-					`tabSales Invoice Item`.name as "item_row", `tabSales Invoice`.is_return
+					`tabSales Invoice Item`.delivery_note,
+                    sum(`tabSales Invoice Item`.stock_qty) as qty,
+					sum(`tabSales Invoice Item`.base_net_rate) as base_net_rate,
+                    sum(`tabSales Invoice Item`.base_net_amount) as base_net_amount,
+					`tabSales Invoice Item`.name as "item_row", 
+                    `tabSales Invoice`.is_return
 					{sales_person_cols}
 				from
 					`tabSales Invoice` inner join `tabSales Invoice Item`
@@ -346,9 +349,8 @@ class GrossProfitGenerator(object):
 				where
 					`tabSales Invoice`.docstatus=1 {conditions} {match_cond}
 				group by
-					`tabSales Invoice`.customer, `tabSales Invoice Item`.item_code
-				order by
-					`tabSales Invoice`.posting_date desc, `tabSales Invoice`.posting_time desc"""
+					`tabSales Invoice`.customer asc, `tabSales Invoice Item`.item_code asc
+                    WITH ROLLUP"""
 				.format(conditions=conditions, sales_person_cols=sales_person_cols,
 					sales_team_table=sales_team_table, match_cond = get_match_cond('Sales Invoice')), self.filters, as_dict=1)
 
